@@ -155,8 +155,10 @@
            wi(i+1)=CMB%binw(i)
         end do
         gpa(1)=1._dl
-         do i=1,CMB%numbins
+        gpa(2) = (1._dl + CMB%bina(1))/2
+         do i=2,CMB%numbins
             gpa(i+1) = (CMB%bina(i-1)+CMB%bina(i))/2.
+         end do
          end do
     end if
 
