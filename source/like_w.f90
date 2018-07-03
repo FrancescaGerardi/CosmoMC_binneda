@@ -168,11 +168,11 @@
     
     
     !COMPUTING MEAN OF W_I VALUES-----------
-    wfid(1) = (wi(1)+wi(2)+(-1))/3
+    wfid(1) = (wi(1)+wi(2))/2
     do i=2,d
        wfid(i)=(wi(i-1)+wi(i)+wi(i+1))/3
     end do
-    wfid(d)= (wi(d-1)+wi(d))/2
+    wfid(d)= (wi(d-1)+wi(d)*2)/3
     if (debugging) write(*,*) 'il vettore v_wfid', wfid
 
 
