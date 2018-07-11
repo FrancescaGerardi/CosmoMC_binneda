@@ -159,7 +159,6 @@
          do i=2,CMB%numbins
             gpa(i+1) = (CMB%bina(i-1)+CMB%bina(i))/2.
          end do
-         end do
     end if
 
     if (debugging) write(*,*) 'il vettore scale factors e', gpa
