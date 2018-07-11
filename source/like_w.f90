@@ -8,7 +8,7 @@
     implicit none
     private
 
-    logical :: debugging=.true.
+    logical :: debugging=.false.
     logical :: debugging_paramsprior=.false.
 
     !likelihood variables
