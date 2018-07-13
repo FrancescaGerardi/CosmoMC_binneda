@@ -6,7 +6,7 @@ use ModelParams
       implicit none
       logical, parameter :: debugging = .true.
       real(dl), dimension(:),allocatable :: binned_a
-      real(dl), dimension(:),allocatable :: binned_z, binned_w, rhodeint !output arrays of GP reconstruction
+      real(dl), dimension(:),allocatable :: binned_z, binned_w,binned_red, rhodeint, redint !output arrays of GP reconstruction
       real(dl), dimension(:),allocatable :: b1, c1, d1                   !coefficients for interpolation
       real(dl), dimension(:),allocatable :: b2, c2, d2                   !coefficients for interpolation
       real(dl)    :: multitheta !double theta function for binning
@@ -17,7 +17,8 @@ use ModelParams
       real(dl), parameter :: initial_a = 1._dl
       real(dl) :: final_z
       real(dl) :: final_a
-      integer, parameter  :: nsteps = 10000
+      integer, parameter  :: nsteps = 100
+      real(dl) :: red_interval
 
       contains
 
@@ -78,37 +79,38 @@ use ModelParams
       !The initial value of rhode is added later
       Type(CAMBparams) CP
       real(dl)              :: wde, rhode0, integral, wplus, wminus
-      integer,parameter     :: numint=1000, numarr=1000
-      real(dl), dimension(numint) :: redint
       integer               :: i,j,k
 
-      rhode0=3._dl*((1000*CP%H0/c)**2.)*CP%omegav
+
+!Binning for integration------------------
 
       if ((CP%model.eq.theta_bin).or.(CP%model.eq.smooth_bin)) then
-
-         do i=1,nsteps
-            binned_z(i)=(i-1)*(final_z)/(nsteps-1)
-         end do
-        
+         final_z=CP%zb(CP%nb)
+      else if (CP%model.eq.GP) then
+         final_z=binned_z(nsteps)
       end if
 
-      do j=1, nsteps
-         integral = 0._dl
+      write(*,*) final_z
 
-         do i=1,numint
-            redint(i)=(i-1)*binned_z(j)/(numint-1)
-         end do
- 
-         do i=1,numint-1
-            call get_wofz(CP, 1/(1+redint(i)), wminus)
-            call get_wofz(CP, 1/(1+redint(i+1)), wplus)
-            integral = integral + 0.5*((1+wplus)/(1+redint(i+1))+(1+wminus)/(1+redint(i)))*(binned_z(j)/(numint-1))
-         end do
+      do i=1,nsteps
+         redint(i)=(i-1)*final_z/(nsteps-1)
+      end do
+      red_interval=final_z/(nsteps-1)     
 
+      do i=1,nsteps-1
+         binned_red(i)=(i+1-1)*final_z/(nsteps-1)
+      end do
+
+!-----------------------------------------
+
+      do j=1, nsteps   
+         call get_wofz(CP, 1._dl/(1+redint(j)), wminus)
+         call get_wofz(CP, 1._dl/(1+redint(j+1)), wplus)
+         integral = integral + 0.5*((1+wplus)/(1+redint(j+1))+(1+wminus)/(1+redint(j)))*(final_z/(nsteps-1))
          rhodeint(j) = exp(3._dl*integral)
       end do
 
-      call newspline(binned_z,rhodeint, b2, c2, d2, nsteps)
+      call newspline(binned_red,rhodeint, b2, c2, d2, nsteps-1)
 
       end subroutine get_integral_rhode
 
@@ -125,11 +127,11 @@ use ModelParams
       else
          z = -1+1._dl/(a+eps)
       end if
-      if (z.le.binned_z(nsteps)) then
-         rhode = ispline(z, binned_z, rhodeint, b2, c2, d2, nsteps)
+      if (z.le.redint(nsteps)) then
+         rhode = ispline(z, binned_red, rhodeint, b2, c2, d2, nsteps-1)
       else
-         call get_wofz(CP, 1/(1+binned_z(nsteps)), lastw)
-         rhode = ((1+z)/(1+binned_z(nsteps)))**(3*(1+lastw))*ispline(binned_z(nsteps), binned_z, rhodeint, b2, c2, d2, nsteps)
+         call get_wofz(CP, 1/(1+redint(nsteps)), lastw)
+         rhode = ((1+z)/(1+redint(nsteps)))**(3*(1+lastw))*ispline(redint(nsteps), binned_red, rhodeint, b2, c2, d2, nsteps-1)
       end if
 
       end subroutine get_rhode
@@ -156,10 +158,12 @@ use ModelParams
       real(dl) :: redshift, wdetest, rhodetest, omegam, omegade,rhode0
 
 
+
       !allocating arrays
-      if (allocated(binned_z) .eqv. .false.) allocate (binned_a(nsteps),binned_z(nsteps),binned_w(nsteps), rhodeint(nsteps))
+      if (allocated(binned_z) .eqv. .false.) allocate (binned_a(nsteps),binned_z(nsteps),binned_w(nsteps),binned_red(nsteps-1), rhodeint(nsteps), redint(nsteps))
       if (allocated(b1) .eqv. .false.) allocate (b1(nsteps), c1(nsteps), d1(nsteps))
       if (allocated(b2) .eqv. .false.) allocate (b2(nsteps), c2(nsteps), d2(nsteps))
+
 
       nlbins=(CP%nb)-1
 
@@ -271,8 +275,8 @@ use ModelParams
          write(*,*) 'printing w(z)'
          open(40,file='printwde.dat')
          open(42,file='printomega.dat')
-         do m=1,101
-            redshift=(m-1)*3._dl/100
+         do m=1,1001
+            redshift=(m-1)*3._dl/1000
             call get_wofz(CP,1/(1+redshift), wdetest)
             call get_rhode(1/(1+redshift), rhodetest)
             rhode0=3._dl*((1000*CP%H0/c)**2.)*CP%omegav
@@ -424,3 +428,4 @@ end function ispline
   
 
 end module binnedw
+

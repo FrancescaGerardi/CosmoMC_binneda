@@ -74,11 +74,11 @@ w_pred, sigma = gp.predict(a_sampling[:, np.newaxis], return_std=True)
 w_pred = w_pred + base(a_sampling)
 
 #Plot the result: remove it from final verions
-fig= plt.figure(figsize=(14,12))
-plt.plot(a_sampling, w_pred, label = 'l=%s'%l)
-plt.legend(fontsize=20)
-plt.scatter(a, wde)
-fig.savefig('test_figure.png')
+#fig= plt.figure(figsize=(14,12))
+#plt.plot(a_sampling, w_pred, label = 'l=%s'%l)
+#plt.legend(fontsize=20)
+#plt.scatter(a, wde)
+#fig.savefig('test_figure.png')
 
 # print to file
 #f = open(filename,'w')

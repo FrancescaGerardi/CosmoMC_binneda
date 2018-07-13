@@ -135,7 +135,7 @@
     end do
     do i=1,P%nb
        P%zb(i)=-1+1._dl/(P%ab(i))
-       write(*,*) 'redshift', i, P%zb(i)
+!       write(*,*) 'redshift', i, P%zb(i)
     end do
     P%endred = P%zb(P%nb)
     write(*,*) 'endred', P%endred
