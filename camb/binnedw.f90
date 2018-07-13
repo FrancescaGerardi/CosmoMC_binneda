@@ -90,7 +90,7 @@ use ModelParams
          final_z=binned_z(nsteps)
       end if
 
-      write(*,*) final_z
+      if (debugging) write(*,*) final_z
 
       do i=1,nsteps
          redint(i)=(i-1)*final_z/(nsteps-1)
