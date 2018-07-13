@@ -103,7 +103,7 @@ use ModelParams
 
 !-----------------------------------------
 
-      do j=1, nsteps   
+      do j=1, nsteps-1   
          call get_wofz(CP, 1._dl/(1+redint(j)), wminus)
          call get_wofz(CP, 1._dl/(1+redint(j+1)), wplus)
          integral = integral + 0.5*((1+wplus)/(1+redint(j+1))+(1+wminus)/(1+redint(j)))*(final_z/(nsteps-1))
