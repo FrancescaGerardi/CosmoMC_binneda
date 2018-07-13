@@ -4,7 +4,7 @@ use constants
 use ModelParams
 
       implicit none
-      logical, parameter :: debugging = .true.
+      logical, parameter :: debugging = .false.
       real(dl), dimension(:),allocatable :: binned_a
       real(dl), dimension(:),allocatable :: binned_z, binned_w,binned_red, rhodeint, redint !output arrays of GP reconstruction
       real(dl), dimension(:),allocatable :: b1, c1, d1                   !coefficients for interpolation
