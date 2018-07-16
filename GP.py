@@ -54,7 +54,6 @@ wde=np.concatenate([wn,wde])
 
 #GP smoothed at last point
 sma=[a[nb]-0.01]
-print sma
 a_gp=np.concatenate([a,sma])
 smw=[wde[nb]]
 wde_gp=np.concatenate([wde,smw])
