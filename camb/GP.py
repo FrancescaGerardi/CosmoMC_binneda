@@ -39,18 +39,27 @@ enda = args.enda[0]
 ODEsteps = args.ODEsteps[0]
 #z_edge = np.array(args.redshifts) #NH redshift at edge of each bin
 wde = np.array(args.eos)
+
+nb=len(wde)
+
 wn = np.array(args.eosn)
 l = args.l[0]
 filename = args.outfile[0]
 
 a = np.array(args.scalefactors)#z_edge[:-1] + np.diff(z_edge)/2 #NH z is now the redshift in the middle of each bin
 ini=[inia]
-a=np.concatenate([ini,a])
-#print  a
-wde=np.concatenate([wn,wde])
-#print  wde
 
-nb=len(wde)
+a=np.concatenate([ini,a])
+wde=np.concatenate([wn,wde])
+
+#GP smoothed at last point
+sma=[a[nb]-0.01]
+print sma
+a_gp=np.concatenate([a,sma])
+smw=[wde[nb]]
+wde_gp=np.concatenate([wde,smw])
+
+
 #defining the baseline -1
 base = lambda x: -1+x-x
 
@@ -58,17 +67,17 @@ base = lambda x: -1+x-x
 gp = GaussianProcessRegressor(kernel=RBF(l, (l, l)))
 
 #Fit --> Training
-g = gp.fit(a[:, np.newaxis], wde-base(a))
+g = gp.fit(a_gp[:, np.newaxis], wde_gp-base(a_gp))
 
 #Plotting points (if log use np.logspace)
 a_sampling = np.linspace(inia, enda, ODEsteps)
-print a_sampling
+#print a_sampling
 
 #transforming a_sampling in z_sampling
 z_sampling=np.zeros(ODEsteps)
 for i in range (ODEsteps):
     z_sampling[i]= -1 + 1/a_sampling[i]
-print z_sampling
+#print z_sampling
 #Predict points
 w_pred, sigma = gp.predict(a_sampling[:, np.newaxis], return_std=True)
 w_pred = w_pred + base(a_sampling)
