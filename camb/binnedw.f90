@@ -83,12 +83,7 @@ use ModelParams
 
 
 !Binning for integration------------------
-
-      if ((CP%model.eq.theta_bin).or.(CP%model.eq.smooth_bin)) then
-         final_z=CP%zb(CP%nb)
-      else if (CP%model.eq.GP) then
-         final_z=binned_z(nsteps)
-      end if
+      final_z=CP%zb(CP%nb)
 
       if (debugging) write(*,*) final_z
 
