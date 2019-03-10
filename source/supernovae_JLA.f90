@@ -1184,7 +1184,9 @@
 
     !integration and interpolation stuff
     integer  :: ii, jj
-    real(mcp), dimension(10000) :: integrand, zint,tab_rhostar,ddrhostar
+    integer, parameter :: samp_size = 10000
+    real(mcp), dimension(samp_size) :: integrand, zint,tab_rhostar,ddrhostar
+    real(mcp), dimension(samp_size) :: b1,c1,d1
 
     !MMmod: SNsys integrating and preparing interpolation
     Gconst = 4.30091e-3
@@ -1192,26 +1194,25 @@
     rhoc   = (3*CMB%H0**2.)/(8.*3.14159*Gconst)
     omegab = CMB%ombh2/(CMB%H0/100)**2.
 
-    do ii=1,10000
-       zint(ii)      = (ii-1)*10._mcp/10000._mcp !0-10 range is enough for mettallicity integrand to drop off
+    do ii=1,samp_size
+       zint(ii)      = (ii-1)*10._mcp/samp_size !0-10 range is enough for mettallicity integrand to drop off
        metal_psi     = (0.015*(1+zint(ii))**2.7)/(1+((1+zint(ii))/2.9)**5.6)
        integrand(ii) = metal_psi/((1+zint(ii))*this%Calculator%Hofz(zint(ii))*299792)
     end do
 
     tab_rhostar = 0._mcp
-    do ii=1,1000
+    do ii=1,samp_size
        
-       if (ii.eq.1000) then
+       if (ii.eq.samp_size) then
           tab_rhostar(ii) = 0._mcp
        else
-          do jj=ii+1,1000
+          do jj=ii+1,samp_size
              tab_rhostar(ii) = tab_rhostar(ii) + 0.5*(integrand(jj)+integrand(jj-1))*(zint(jj)-zint(jj-1))
           end do
        end if
     end do
 
-    call spline(zint,tab_rhostar,1000,1.e30_dl,1.e30_dl,ddrhostar)
-
+    call my_newspline(zint,tab_rhostar, b1, c1, d1, samp_size)
 
     jla_LnLike = logZero
 
@@ -1243,7 +1244,7 @@
 
 
         intpsi        = 0._mcp
-        call splint(zint, tab_rhostar, ddrhostar, 1000, zhel, intpsi)
+        intpsi        = my_ispline(zhel, zint, tab_rhostar, b1, c1, d1, samp_size)
         metal_rhostar = (1-CMB%metal_R)*intpsi
         metal_Zb      = CMB%metal_y*(metal_rhostar/((omegab)*rhoc))*(3.0857e13/(3600*24*365.25))
         metalsys      = -2.5*log10((1-0.18*metal_Zb)/(Zsun*(1-metal_Zb/Zsun)))-0.191   !metallicity systematic
@@ -1280,43 +1281,137 @@
 
     END FUNCTION jla_LnLike
 
-    END MODULE JLA
 
+   subroutine my_newspline (x, y, b, c, d, n)
+!======================================================================
+!  Calculate the coefficients b(i), c(i), and d(i), i=1,2,...,n
+!  for cubic spline interpolation
+!  s(x) = y(i) + b(i)*(x-x(i)) + c(i)*(x-x(i))**2 + d(i)*(x-x(i))**3
+!  for  x(i) <= x <= x(i+1)
+!  Alex G: January 2010
+!----------------------------------------------------------------------
+!  input..
+!  x = the arrays of data abscissas (in strictly increasing order)
+!  y = the arrays of data ordinates
+!  n = size of the arrays xi() and yi() (n>=2)
+!  output..
+!  b, c, d  = arrays of spline coefficients
+!  comments ...
+!  spline.f90 program is based on fortran version of program spline.f
+!  the accompanying function fspline can be used for interpolation
+!======================================================================
+implicit none
+integer n
+real(dl) x(n), y(n), b(n), c(n), d(n)
+integer i, j, gap
+real(dl) h
 
-!   SUBROUTINE splint(xa, ya, y2a, n, x, y)
-!   USE nrtype
+gap = n-1
+! check input
+if ( n < 2 ) return
+if ( n < 3 ) then
+  b(1) = (y(2)-y(1))/(x(2)-x(1))   ! linear interpolation
+  c(1) = 0.
+  d(1) = 0.
+  b(2) = b(1)
+  c(2) = 0.
+  d(2) = 0.
+  return
+end if
 !
-! Given the arrays xa(1:n) and ya(1:n) of length n, which tabulate a function
-! (with the xa(i) in order), and given the array y2a(1:n), which is the output
-! from the subroutine spline, and given a value of x, this routine returns a
-! cubic spline interpolated value y.
-! (adopted from Numerical Recipes in FORTRAN 77)
+! step 1: preparation
 !
-!   INTEGER, PARAMETER :: DP = KIND(1.0D0)
-!   INTEGER:: n
-!   REAL(DP):: x, y, xa(n), y2a(n), ya(n)
-!   INTEGER:: k, khi, klo
-!   REAL(DP):: a, b, h
+d(1) = x(2) - x(1)
+c(2) = (y(2) - y(1))/d(1)
+do i = 2, gap
+  d(i) = x(i+1) - x(i)
+  b(i) = 2.0*(d(i-1) + d(i))
+  c(i+1) = (y(i+1) - y(i))/d(i)
+  c(i) = c(i+1) - c(i)
+end do
 !
-!     klo=1
-!     khi=n
-!1   if (khi-klo.gt.1) then
-!        k=(khi+klo)/2
-!        if (xa(k).gt.x) then
-!           khi=k
-!        else
-!           klo=k
-!        endif
-!        goto 1
-!     endif
+! step 2: end conditions
 !
-!     h=xa(khi)-xa(klo)
-!     if (h.eq.0.) pause 'bad xa input in splint'
+b(1) = -d(1)
+b(n) = -d(n-1)
+c(1) = 0.0
+c(n) = 0.0
+if(n /= 3) then
+  c(1) = c(3)/(x(4)-x(2)) - c(2)/(x(3)-x(1))
+  c(n) = c(n-1)/(x(n)-x(n-2)) - c(n-2)/(x(n-1)-x(n-3))
+  c(1) = c(1)*d(1)**2/(x(4)-x(1))
+  c(n) = -c(n)*d(n-1)**2/(x(n)-x(n-3))
+end if
 !
-!     a=(xa(khi)-x)/h
-!     b=(x-xa(klo))/h
-!     y=a*ya(klo)+b*ya(khi)+((a**3-a)*y2a(klo)+(b**3-b)*y2a(khi))*(h**2)/6.
+! step 4: back substitution
 !
-!     return
-!     END
+c(n) = c(n)/b(n)
+do j = 1, gap
+  i = n-j
+  c(i) = (c(i) - d(i)*c(i+1))/b(i)
+end do
+!
+! step 5: compute spline coefficients
+!
+b(n) = (y(n) - y(gap))/d(gap) + d(gap)*(c(gap) + 2.0*c(n))
+do i = 1, gap
+  b(i) = (y(i+1) - y(i))/d(i) - d(i)*(c(i+1) + 2.0*c(i))
+  d(i) = (c(i+1) - c(i))/d(i)
+  c(i) = 3.*c(i)
+end do
+c(n) = 3.0*c(n)
+d(n) = d(n-1)
+end subroutine my_newspline
 
+  function my_ispline(u, x, y, b, c, d, n)
+!======================================================================
+! function ispline evaluates the cubic spline interpolation at point z
+! ispline = y(i)+b(i)*(u-x(i))+c(i)*(u-x(i))**2+d(i)*(u-x(i))**3
+! where  x(i) <= u <= x(i+1)
+!----------------------------------------------------------------------
+! input..
+! u       = the abscissa at which the spline is to be evaluated
+! x, y    = the arrays of given data points
+! b, c, d = arrays of spline coefficients computed by spline
+! n       = the number of data points
+! output:
+! ispline = interpolated value at point u
+!=======================================================================
+implicit none
+double precision my_ispline
+integer n
+double precision  u, x(n), y(n), b(n), c(n), d(n)
+integer i, j, k
+double precision dx
+
+! if u is ouside the x() interval take a boundary value (left or right)
+if(u <= x(1)) then
+  my_ispline = y(1)
+  return
+end if
+if(u >= x(n)) then
+  my_ispline = y(n)
+  return
+end if
+
+!*
+!  binary search for for i, such that x(i) <= u <= x(i+1)
+!*
+i = 1
+j = n+1
+do while (j > i+1)
+  k = (i+j)/2
+  if(u < x(k)) then
+    j=k
+    else
+    i=k
+   end if
+end do
+!*
+!  evaluate spline interpolation
+!*
+dx = u - x(i)
+my_ispline = y(i) + dx*(b(i) + dx*(c(i) + dx*d(i)))
+end function my_ispline
+
+end module jla
