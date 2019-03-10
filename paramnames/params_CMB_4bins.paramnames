@@ -17,6 +17,12 @@ fdm           \epsilon_0 f_d    #CosmoRec dark matter annihilation parameter, 09
 binw0         w0
 bina1         a1
 binw1         w1
+bina2         a2
+binw2         w2
+bina3         a3
+binw3         w3
+bina4         a4
+binw4         w4
 corr_l        l
 smoothfactor  sf
 mode          model

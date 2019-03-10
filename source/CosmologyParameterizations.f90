@@ -79,7 +79,9 @@
     this%num_derived = Names%num_derived
     !set number of hard parameters, number of initial power spectrum parameters
     !MMmod: binned w------------------------------------------------------
-    call this%SetTheoryParameterNumbers(16+1+2*init_nbin+3,last_power_index)
+    write(*,*) 'parameters=',16+1+2*init_nbin+3+8
+    call this%SetTheoryParameterNumbers(16+1+2*init_nbin+3+8,last_power_index) !MMmod: SNsys added 7 parameters +1 switch
+    write(*,*) 'parameters=',16+1+2*init_nbin+3+8
     !--------------------------------------------------------------------- 
 
     end subroutine TP_Init
@@ -340,6 +342,7 @@
         CMB%ALensf = Params(15)
         CMB%fdm = Params(16)
 
+
         !MMmod: binned w-------------------------------------------------------------------
         CMB%numbins = init_nbin
         if (.not.allocated(CMB%bina)) allocate(CMB%bina(CMB%numbins),CMB%binw(CMB%numbins))
@@ -355,6 +358,22 @@
         CMB%smoothfactor= Params(17+j+2)
         CMB%mode        = Params(17+j+3)
         !----------------------------------------------------------------------------------
+
+        !MMmod: SNsys---------------------------------------
+        !phenomenological systematic
+        CMB%pheno_eps   = Params(16+1+2*init_nbin+3+1)
+        CMB%pheno_delta = Params(16+1+2*init_nbin+3+2)
+
+        !SFR systematic
+        CMB%SFR_kappa   = Params(16+1+2*init_nbin+3+3)
+        CMB%SFR_phi     = Params(16+1+2*init_nbin+3+4)
+        CMB%SFR_Dgamma  = Params(16+1+2*init_nbin+3+5)
+ 
+        !metallicity systematics
+        CMB%metal_y     = Params(16+1+2*init_nbin+3+6)
+        CMB%metal_R     = Params(16+1+2*init_nbin+3+7)
+        CMB%metal_switch= Params(16+1+2*init_nbin+3+8) !to be a setting, not a parameter
+        !---------------------------------------------------
 
         call SetFast(Params,CMB)
     end if

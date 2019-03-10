@@ -1176,6 +1176,42 @@
     REAL(mcp) :: jla_LnLike
     real(dl) grid_best, zhel, zcmb, alpha, beta
     integer grid_i, i
+    !MMmod: SNsys
+    real(mcp) :: phenosys                                     !terms for phenomenological systematic
+    real(mcp) :: SFRsys, SFR_psi                              !terms for SFR systematic
+    real(mcp) :: metalsys, metal_psi, metal_Zb, metal_rhostar !terms for metallicity systematic
+    real(mcp) :: Gconst, Zsun, rhoc, intpsi, omegab           !other stuff
+
+    !integration and interpolation stuff
+    integer  :: ii, jj
+    real(mcp), dimension(10000) :: integrand, zint,tab_rhostar,ddrhostar
+
+    !MMmod: SNsys integrating and preparing interpolation
+    Gconst = 4.30091e-3
+    Zsun   = 0.0134
+    rhoc   = (3*CMB%H0**2.)/(8.*3.14159*Gconst)
+    omegab = CMB%ombh2/(CMB%H0/100)**2.
+
+    do ii=1,10000
+       zint(ii)      = (ii-1)*10._mcp/10000._mcp !0-10 range is enough for mettallicity integrand to drop off
+       metal_psi     = (0.015*(1+zint(ii))**2.7)/(1+((1+zint(ii))/2.9)**5.6)
+       integrand(ii) = metal_psi/((1+zint(ii))*this%Calculator%Hofz(zint(ii))*299792)
+    end do
+
+    tab_rhostar = 0._mcp
+    do ii=1,1000
+       
+       if (ii.eq.1000) then
+          tab_rhostar(ii) = 0._mcp
+       else
+          do jj=ii+1,1000
+             tab_rhostar(ii) = tab_rhostar(ii) + 0.5*(integrand(jj)+integrand(jj-1))*(zint(jj)-zint(jj-1))
+          end do
+       end if
+    end do
+
+    call spline(zint,tab_rhostar,1000,1.e30_dl,1.e30_dl,ddrhostar)
+
 
     jla_LnLike = logZero
 
@@ -1198,6 +1234,21 @@
         zhel = sndata(i)%zhel
         zcmb = sndata(i)%zcmb
         lumdists(i) = 5.0* LOG10( (1.0+zhel)*(1.0+zcmb) * this%Calculator%AngularDiameterDistance(zcmb) )
+
+        !MMmod: SNsys
+        phenosys      = CMB%pheno_eps*zhel**CMB%pheno_delta                           !phenomenological systematic
+
+        SFR_psi       = (1+CMB%SFR_kappa*(1+zhel)**CMB%SFR_phi)**(-1.)
+        SFRsys        = SFR_psi*CMB%SFR_Dgamma                                        !SFR systematic
+
+
+        intpsi        = 0._mcp
+        call splint(zint, tab_rhostar, ddrhostar, 1000, zhel, intpsi)
+        metal_rhostar = (1-CMB%metal_R)*intpsi
+        metal_Zb      = CMB%metal_y*(metal_rhostar/((omegab)*rhoc))*(3.0857e13/(3600*24*365.25))
+        metalsys      = -2.5*log10((1-0.18*metal_Zb)/(Zsun*(1-metal_Zb/Zsun)))-0.191   !metallicity systematic
+        
+        lumdists(i) = lumdists(i) + phenosys + SFRsys - CMB%metal_switch*metalsys
     ENDDO
 
     !Handle SN with absolute distances
@@ -1230,3 +1281,42 @@
     END FUNCTION jla_LnLike
 
     END MODULE JLA
+
+
+!   SUBROUTINE splint(xa, ya, y2a, n, x, y)
+!   USE nrtype
+!
+! Given the arrays xa(1:n) and ya(1:n) of length n, which tabulate a function
+! (with the xa(i) in order), and given the array y2a(1:n), which is the output
+! from the subroutine spline, and given a value of x, this routine returns a
+! cubic spline interpolated value y.
+! (adopted from Numerical Recipes in FORTRAN 77)
+!
+!   INTEGER, PARAMETER :: DP = KIND(1.0D0)
+!   INTEGER:: n
+!   REAL(DP):: x, y, xa(n), y2a(n), ya(n)
+!   INTEGER:: k, khi, klo
+!   REAL(DP):: a, b, h
+!
+!     klo=1
+!     khi=n
+!1   if (khi-klo.gt.1) then
+!        k=(khi+klo)/2
+!        if (xa(k).gt.x) then
+!           khi=k
+!        else
+!           klo=k
+!        endif
+!        goto 1
+!     endif
+!
+!     h=xa(khi)-xa(klo)
+!     if (h.eq.0.) pause 'bad xa input in splint'
+!
+!     a=(xa(khi)-x)/h
+!     b=(x-xa(klo))/h
+!     y=a*ya(klo)+b*ya(khi)+((a**3-a)*y2a(klo)+(b**3-b)*y2a(khi))*(h**2)/6.
+!
+!     return
+!     END
+

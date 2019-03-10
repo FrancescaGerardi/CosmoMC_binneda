@@ -125,6 +125,12 @@
         real    ::   corr_l
         integer :: smoothfactor,mode, numbins
         !---------------------------------------------------
+
+        !MMmod: SNsys---------------------------------------
+        real(mcp) :: pheno_eps, pheno_delta                  !phenomenological systematic
+        real(mcp) :: SFR_kappa, SFR_phi, SFR_Dgamma          !SFR systematic
+        real(mcp) :: metal_y, metal_R, metal_switch
+        !---------------------------------------------------
     end Type CMBParams
 
     Type, extends(TParameterization) :: TCosmologyParameterization
