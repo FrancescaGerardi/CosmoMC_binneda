@@ -83,9 +83,13 @@ use ModelParams
 
 
 !Binning for integration------------------
-      final_z=CP%zb(CP%nb)
 
-      if (debugging) write(*,*) final_z
+      if ((CP%model.eq.theta_bin).or.(CP%model.eq.smooth_bin)) then
+         final_z=CP%zb(CP%nb)
+      else if (CP%model.eq.GP) then
+         final_z=binned_z(nsteps)
+      end if
+
 
       do i=1,nsteps
          redint(i)=(i-1)*final_z/(nsteps-1)
@@ -150,7 +154,7 @@ use ModelParams
       integer :: getpid
       integer :: system
       integer :: i,m,nlbins
-      real(dl) :: redshift, wdetest, rhodetest, omegam, omegade,rhode0
+      real(dl) :: redshift, wdetest, rhodetest, omegam, omegade,rhode0,time1,time2,int1,int2
 
 
 
@@ -179,7 +183,7 @@ use ModelParams
 
       !Gaussian process interface
       if (CP%model.eq.GP) then
-
+call cpu_time(time1)
          !Setting GP redshift to median redshift of each bin
          gpa(1) = (initial_a+CP%ab(1))/2
          do i=2,CP%nb
@@ -254,16 +258,18 @@ use ModelParams
          !Setting interpolation for GP arrays------------------------
          call newspline(binned_z,binned_w, b1, c1, d1, nsteps)
          !-----------------------------------------------------------
-
+call cpu_time(time2)
+if (debugging) write(*,*) 'DONE GP',time2-time1
      else if (CP%model.gt.3) then
          write(*,*) "THIS MODEL DOESN'T EXIST!!!!"
          stop
      end if
 
      if (debugging) write(*,*) 'w(z) computed'
-
+call cpu_time(int1)
      call get_integral_rhode(CP)
-
+call cpu_time(int2)
+if (debugging) write(*,*) 'integration=',INT2-INT1
      if (debugging) write(*,*) 'done rho_de integral'
 
      if (debugging) then

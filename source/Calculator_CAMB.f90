@@ -91,6 +91,7 @@
     P%omegab = CMB%omb
     P%omegan = CMB%omnu
     P%omegac = CMB%omc
+    write(*,*) 'in cosmomc',CMB%omv
     P%omegav = CMB%omv
     P%H0 = CMB%H0
     P%Reion%redshift= CMB%zre

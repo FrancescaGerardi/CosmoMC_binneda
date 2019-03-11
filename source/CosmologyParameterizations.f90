@@ -384,6 +384,7 @@
     CMB%omc = CMB%omch2/h2
     CMB%omnu = CMB%omnuh2/h2
     CMB%omdm = CMB%omdmh2/h2
+    write(*,*) 'in param',CMB%omk,CMB%omb,CMB%omdm
     CMB%omv = 1- CMB%omk - CMB%omb - CMB%omdm
 
     end subroutine SetForH

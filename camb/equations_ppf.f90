@@ -152,9 +152,8 @@
 
     function grho_de(a)  !8 pi G a^4 rho_de
     use binnedw !MMmod: binned w
-    real(dl) :: grho_de, al, fint
+    real(dl) :: grho_de, al, fint,tde1,tde2
     real(dl), intent(IN) :: a
-
     !MMmod: binned w
     if (CP%model.eq.0) then
        if(.not. use_tabulated_w) then
@@ -178,6 +177,7 @@
        !it needs to be multiplied by grhov to be the quantity used later
        grho_de = grhov*grho_de*a**4._dl
     end if
+
     end function grho_de
 
     !-------------------------------------------------------------------
@@ -235,11 +235,10 @@
     !This is only called once per model, and is a good point to do any extra initialization.
     !It is called before first call to dtauda, but after
     !massive neutrinos are initialized and after GetOmegak
-    real(dl) red
+    real(dl) red,tempo1,tempo2
 
     !MMmod: w_binned----------------------------------
     is_cosmological_constant = .not. use_tabulated_w .and. w_lam==-1_dl .and. wa_ppf==0._dl .and. CP%model==0
-
     if (CP%model.gt.0) then
        is_cosmological_constant = .true.
        if (any(CP%wb.ne.-1._dl)) is_cosmological_constant = .false.
@@ -247,7 +246,6 @@
 
     if (CP%model.gt.0) call calc_w_de(CP)
     !-------------------------------------------------
-    
       
     end  subroutine init_background
 
