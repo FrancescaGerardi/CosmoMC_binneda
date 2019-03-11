@@ -395,7 +395,6 @@
     grhoc=grhom*CP%omegac
     grhob=grhom*CP%omegab
     grhov=grhom*CP%omegav
-    write(*,*) 'MMtest',CP%omegav,grhov
     grhok=grhom*CP%omegak
     !  adotrad gives the relation a(tau) in the radiation era:
     adotrad = sqrt((grhog+grhornomass+sum(grhormass(1:CP%Nu_mass_eigenstates)))/3)

@@ -5,7 +5,8 @@ BUILD ?= MPI
 #set BUILD to MPI to force MPI, should be set in ../Makefile
 
 
-ifortErr = $(shell which ifort >/dev/null; echo $$?)
+ifortErr = 1
+#$(shell which ifort >/dev/null; echo $$?)
 
 #these settings for ifort 14 and higher. Earlier versions will not work.
 ifeq "$(ifortErr)" "0"
