@@ -1,0 +1,195 @@
+Parameter autocorrelation lengths (effective number of samples N_eff = tot weight/weight length)
+
+              Weight Length   Sample length           N_eff
+omegabh2             274.95           30.25             848
+omegach2             350.65           38.58             665
+theta                351.77           38.70             663
+binw1               1542.96          169.76             151
+pheno_eps            541.14           59.54             431
+pheno_delta         1607.03          176.81             145
+alpha_JLA             36.65            4.03            6368
+beta_JLA              32.93            3.62            7086
+H0                   351.24           38.65             664
+omegal               443.19           48.76             526
+omegam               443.19           48.76             526
+omegamh2             354.76           39.03             657
+omegamh3             340.84           37.50             684
+sigma8                94.44           10.39            2471
+s8omegamp5            94.44           10.39            2471
+s8omegamp25           94.44           10.39            2471
+s8h5                  94.45           10.39            2471
+yheused              260.66           28.68             895
+YpBBN                260.66           28.68             895
+DHBBN                272.41           29.97             856
+age                  391.18           43.04             596
+zstar                244.48           26.90             954
+rstar                324.99           35.76             718
+thetastar            349.32           38.43             668
+DAstar               376.04           41.37             620
+zdrag                295.37           32.50             790
+rdrag                320.31           35.24             728
+kd                   311.51           34.27             749
+thetad               264.93           29.15             880
+zeq                  354.76           39.03             657
+keq                  350.23           38.53             666
+thetaeq              276.17           30.39             845
+thetarseq            290.58           31.97             803
+rsDv057              314.30           34.58             742
+Hubble057            376.22           41.39             620
+DA057                385.56           42.42             605
+FAP057               410.50           45.17             568
+fsigma8z057           94.42           10.39            2471
+sigma8z057            94.38           10.38            2472
+chi2_JLA              82.08            9.03            2843
+
+
+mean convergence stats using remaining chains
+param sqrt(var(chain mean)/mean(chain var))
+
+omegabh2        0.1206  \Omega_b h^2
+omegach2        0.1010  \Omega_c h^2
+theta           0.1539  100\theta_{MC}
+binw1           0.3686  w1
+pheno_eps       0.1295  \epsilon
+pheno_delta     0.3338  \delta
+alpha_JLA       0.0446  \alpha_{JLA}
+beta_JLA        0.0314  \beta_{JLA}
+H0              0.1105  H_0
+omegal          0.1295  \Omega_\Lambda
+omegam          0.1295  \Omega_m
+omegamh2        0.0975  \Omega_m h^2
+omegamh3        0.0878  \Omega_m h^3
+sigma8          0.0575  \sigma_8
+s8omegamp5      0.0576  \sigma_8 \Omega_m^{0.5}
+s8omegamp25     0.0576  \sigma_8 \Omega_m^{0.25}
+s8h5            0.0576  \sigma_8/h^{0.5}
+yheused         0.1137  Y_P
+YpBBN           0.1137  Y_P^{\rm{BBN}}
+DHBBN           0.1169  10^5D/H
+age             0.0959  {\rm{Age}}/{\rm{Gyr}}
+zstar           0.1131  z_*
+rstar           0.0787  r_*
+thetastar       0.1543  100\theta_*
+DAstar          0.0888  D_{\rm{A}}/{\rm{Gpc}}
+zdrag           0.1075  z_{\rm{drag}}
+rdrag           0.0798  r_{\rm{drag}}
+kd              0.0693  k_{\rm D}
+thetad          0.1424  100\theta_{\rm{D}}
+zeq             0.0975  z_{\rm{eq}}
+keq             0.0934  k_{\rm{eq}}
+thetaeq         0.1153  100\theta_{\rm{eq}}
+thetarseq       0.1165  100\theta_{\rm{s,eq}}
+rsDv057         0.1434  r_{\rm{drag}}/D_V(0.57)
+Hubble057       0.0940  H(0.57)
+DA057           0.1032  D_A(0.57)
+FAP057          0.0936  F_{\rm AP}(0.57)
+fsigma8z057     0.0574  f\sigma_8(0.57)
+sigma8z057      0.0575  \sigma_8(0.57)
+chi2_JLA        0.0779  \chi^2_{\rm JLA}
+
+var(mean)/mean(var) for eigenvalues of covariance of means of orthonormalized parameters
+  1     -0.00000
+  2      0.00024
+  3      0.00037
+  4      0.00355
+  5      0.00723
+  6      0.01792
+  7      0.03110
+  8      0.18302
+
+Split tests: rms_n([delta(upper/lower quantile)]/sd) n={2,3,4}, limit=95%:
+i.e. mean sample splitting change in the quantiles in units of the st. dev.
+
+omegabh2       0.0006   0.0112   0.0330 upper
+omegabh2       0.0081   0.0072   0.0102 lower
+omegach2       0.0104   0.0797   0.0629 upper
+omegach2       0.0013   0.0058   0.0116 lower
+theta          0.1772   0.2979   0.5542 upper
+theta          0.0192   0.1240   0.1964 lower
+binw1          0.0018   0.0054   0.0067 upper
+binw1          0.6386   0.6900   1.1816 lower
+pheno_eps      0.0382   0.0401   0.0592 upper
+pheno_eps      0.0611   0.0513   0.1411 lower
+pheno_delta    1.3089   1.5726   1.6015 upper
+pheno_delta    0.0217   0.1272   0.0272 lower
+alpha_JLA      0.0005   0.0741   0.0398 upper
+alpha_JLA      0.0511   0.0616   0.1007 lower
+beta_JLA       0.0258   0.0442   0.0504 upper
+beta_JLA       0.0047   0.0367   0.0378 lower
+H0             0.0097   0.0029   0.0140 upper
+H0             0.0569   0.1156   0.1479 lower
+omegal         0.0038   0.0034   0.0149 upper
+omegal         0.0787   0.0901   0.5432 lower
+omegam         0.0787   0.0901   0.5432 upper
+omegam         0.0038   0.0034   0.0149 lower
+omegamh2       0.0204   0.0773   0.0646 upper
+omegamh2       0.0156   0.0139   0.0410 lower
+omegamh3       0.0518   0.0747   0.0747 upper
+omegamh3       0.0068   0.0017   0.0219 lower
+sigma8         0.0000   0.0000   0.0001 upper
+sigma8         0.0000   0.0000   0.0000 lower
+s8omegamp5     0.0000   0.0000   0.0000 upper
+s8omegamp5     0.0000   0.0000   0.0000 lower
+s8omegamp25    0.0000   0.0000   0.0001 upper
+s8omegamp25    0.0000   0.0000   0.0000 lower
+s8h5           0.0000   0.0000   0.0001 upper
+s8h5           0.0000   0.0000   0.0000 lower
+yheused        0.0002   0.0032   0.0094 upper
+yheused        0.0365   0.0326   0.0460 lower
+YpBBN          0.0002   0.0032   0.0094 upper
+YpBBN          0.0365   0.0326   0.0460 lower
+DHBBN          0.0278   0.0248   0.0352 upper
+DHBBN          0.0006   0.0120   0.0352 lower
+age            0.1731   0.2519   0.4611 upper
+age            0.0071   0.0048   0.0100 lower
+zstar          0.1700   0.1808   0.1804 upper
+zstar          0.0103   0.0125   0.0122 lower
+rstar          0.0695   0.1204   0.3001 upper
+rstar          0.0072   0.0269   0.0125 lower
+thetastar      0.1654   0.2921   0.5473 upper
+thetastar      0.0322   0.1229   0.1971 lower
+DAstar         0.0149   0.0741   0.2635 upper
+DAstar         0.0023   0.0040   0.0047 lower
+zdrag          0.0062   0.0196   0.0202 upper
+zdrag          0.0916   0.1171   0.1540 lower
+rdrag          0.0662   0.1482   0.2712 upper
+rdrag          0.0033   0.0255   0.0164 lower
+kd             0.0014   0.0476   0.0250 upper
+kd             0.0180   0.0496   0.0775 lower
+thetad         0.1280   0.1658   0.2463 upper
+thetad         0.0188   0.0654   0.1061 lower
+zeq            0.0204   0.0773   0.0646 upper
+zeq            0.0156   0.0139   0.0410 lower
+keq            0.0260   0.0614   0.0440 upper
+keq            0.0154   0.0125   0.0460 lower
+thetaeq        0.2015   0.2435   0.7889 upper
+thetaeq        0.0051   0.0266   0.0382 lower
+thetarseq      0.1824   0.2130   0.7734 upper
+thetarseq      0.0037   0.0274   0.0399 lower
+rsDv057        0.0927   0.2041   0.3634 upper
+rsDv057        0.0424   0.0515   0.0968 lower
+Hubble057      0.0238   0.0166   0.0330 upper
+Hubble057      0.0503   0.0760   0.1286 lower
+DA057          0.2609   0.2865   0.5077 upper
+DA057          0.0051   0.0055   0.0057 lower
+FAP057         0.0650   0.0683   0.0635 upper
+FAP057         0.0869   0.0748   0.1136 lower
+fsigma8z057    0.0000   0.0000   0.0001 upper
+fsigma8z057    0.0000   0.0000   0.0000 lower
+sigma8z057     0.0000   0.0001   0.0002 upper
+sigma8z057     0.0000   0.0000   0.0000 lower
+chi2_JLA       0.1087   0.1580   0.1238 upper
+chi2_JLA       0.0085   0.0125   0.0138 lower
+
+Raftery&Lewis statistics
+
+chain  markov_thin  indep_thin    nburn
+   0      Failed/not enough samples
+   1         151         151        1963
+   2         204         214        4896
+   3      Failed/not enough samples
+   4         164         184        3936
+   5         192         192        1536
+   6      Failed/not enough samples
+   7         216        1052        3672
+
