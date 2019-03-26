@@ -51,6 +51,7 @@
     class(TParamNames) :: Names
     class(TGeneralConfig), target :: Config
     character(LEN=:), pointer :: prior
+    character(len=100) :: namesfile
 
     call Ini%Read('H0_min',this%H0_min)
     call Ini%Read('H0_max',this%H0_max)
@@ -58,6 +59,9 @@
     call Ini%Read('sterile_mphys_max',this%sterile_mphys_max)
     !MMmod: binned w------------------
     call Ini%Read('numbins',init_nbin)
+    !MMmod: make it possible to switch paramnames file
+    namesfile = Ini%Read_String('namesfile',NotFoundFail=.false.)
+    if (namesfile == '') namesfile = 'paramnames/params_CMB.paramnames'
     !---------------------------------
     prior => Ini%Read_String('H0_prior',NotFoundFail=.false.)
     if (prior/='') then
@@ -68,7 +72,9 @@
         read(prior,*) this%zre_prior_mean, this%zre_prior_std
     end if
 
-    call this%Initialize(Ini,Names, 'paramnames/params_CMB.paramnames', Config)
+
+    !call this%Initialize(Ini,Names, 'paramnames/params_CMB.paramnames', Config)
+    call this%Initialize(Ini,Names,adjustl(trim(namesfile)), Config)
     if (CosmoSettings%bbn_consistency) call Names%Add('paramnames/derived_bbn.paramnames')
     call Names%Add('paramnames/derived_theory.paramnames')
     if (CosmoSettings%use_LSS) call Names%Add('paramnames/derived_LSS.paramnames')

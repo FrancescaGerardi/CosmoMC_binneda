@@ -1,15 +1,20 @@
 #!/bin/env bash
 
-python plotter_triangle_metal_comparison.py  
-python plotter_triangle_Planck_binned.py  
-python plotter_triangle_SFR_comparison.py   
-#python plotter_triangle_SNvsPK_SFRsys.py
-python plotter_triangle_NOsys_comparison.py  
-python plotter_triangle_Planck_LCDM.py    
-#python plotter_triangle_SNvsPK_metalsys.py
-python plotter_triangle_Planck_wconst.py  
-#python plotter_triangle_SNvsPK_nosys.py 
+python plotters/plotter_triangle_metal_comparison_JLA.py  
+python plotters/plotter_triangle_Planck_binned_JLA.py  
+python plotters/plotter_triangle_SFR_comparison_JLA.py   
+python plotters/plotter_triangle_NOsys_comparison_JLA.py  
+python plotters/plotter_triangle_Planck_LCDM_JLA.py    
+python plotters/plotter_triangle_wconst_JLA.py  
 
-python wbinned_plot.py
+python plotters/plotter_triangle_metal_comparison_Pantheon.py
+python plotters/plotter_triangle_Planck_binned_Pantheon.py
+python plotters/plotter_triangle_SFR_comparison_Pantheon.py
+python plotters/plotter_triangle_NOsys_comparison_Pantheon.py
+python plotters/plotter_triangle_Planck_LCDM_Pantheon.py
+python plotters/plotter_triangle_wconst_Pantheon.py
+
+
+python plotters/wbinned_plot.py
 
 top
