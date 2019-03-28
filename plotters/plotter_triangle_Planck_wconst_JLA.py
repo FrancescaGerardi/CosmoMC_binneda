@@ -3,12 +3,12 @@ import os
 
 
 analysis_settings = {'ignore_rows': u'0.3'}
-g=gplot.getSubplotPlotter(chain_dir=r'/data1/martinelli/Projects/MY_PROJECTS/SNsys/CosmoMC_binneda/chains',analysis_settings=analysis_settings)
+g=gplot.getSubplotPlotter(chain_dir=r'./chains',analysis_settings=analysis_settings)
 
 
 roots = ['SFRSys_wconst_Planck_JLA_BAO','metalSys_wconst_Planck_JLA_BAO','phenoSys_wconst_Planck_JLA_BAO','NOSys_wconst_Planck_JLA_BAO']
 #roots = ['SFRSys_wconst_Planck']
-params = [u'binw1',u'binw2',u'binw3',u'binw4',u'omegam',u'H0']
+params = [u'binw1',u'omegam',u'H0']
 colors = ['#8E001C','#FFB300','navy','black']
 labels = [ 'SFR sys', 'metallicity sys','No sys']
 #labels = ['SFR sys']

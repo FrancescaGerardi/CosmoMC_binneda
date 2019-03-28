@@ -7,7 +7,7 @@ g=gplot.getSubplotPlotter(chain_dir=r'/data1/martinelli/Projects/MY_PROJECTS/SNs
 
 
 roots = ['metalSys_wbinned_Planck_Pantheon_BAO','metalSys_wconst_Planck_Pantheon_BAO','metalSys_LCDM_Planck_Pantheon_BAO']
-params = [u'H0',u'omegam']
+params = [u'H0',u'omegam','metal_y','metal_R']
 colors = ['#8E001C','#FFB300','navy']
 labels = [ r'$w(z)$CDM', r'$w$CDM',r'$\Lambda$CDM']
 fillcont = [True,True,True,False,False,False]

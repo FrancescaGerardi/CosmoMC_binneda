@@ -7,7 +7,7 @@ g=gplot.getSubplotPlotter(chain_dir=r'/data1/martinelli/Projects/MY_PROJECTS/SNs
 
 
 roots = ['SFRSys_wbinned_Planck_Pantheon_BAO','SFRSys_wconst_Planck_Pantheon_BAO','SFRSys_LCDM_Planck_Pantheon_BAO']
-params = [u'H0',u'omegam']
+params = [u'H0',u'omegam','SFR_kappa','SFR_phi','SFR_Dgamma']
 colors = ['#8E001C','#FFB300','navy']
 labels = [ r'$w(z)$CDM', r'$w$CDM',r'$\Lambda$CDM']
 fillcont = [True,True,True,False,False,False]
