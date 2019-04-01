@@ -1249,7 +1249,7 @@
         metal_Zb      = CMB%metal_y*(metal_rhostar/((omegab)*rhoc))*(3.0857e13/(3600*24*365.25))
         metalsys      = -2.5*log10((1-0.18*metal_Zb)/(Zsun*(1-metal_Zb/Zsun)))-0.191   !metallicity systematic
         
-        lumdists(i) = lumdists(i) + phenosys + SFRsys - CMB%metal_switch*metalsys
+        lumdists(i) = lumdists(i) + phenosys + SFRsys + CMB%metal_switch*metalsys
     ENDDO
 
     !Handle SN with absolute distances
