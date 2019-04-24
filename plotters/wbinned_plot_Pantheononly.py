@@ -46,17 +46,19 @@ eps = 0.01*binwidth #this is only to separate the redshifts a bit for the differ
 
 
 rootdir = 'output/'
-roots = ['NOSys_wbinned_Planck_JLA_BAO','SFRSys_wbinned_Planck_JLA_BAO','metalSys_wbinned_Planck_JLA_BAO']#,'phenoSys_wbinned_Planck_JLA_BAO']#,'wbinned_Planckonly']
+roots = ['NOSys_wbinned_Planck_Pantheon','SFRSys_wbinned_Planck_Pantheon','metalSys_wbinned_Planck_Pantheon']#,'phenoSys_wbinned_Planck_Pantheon_BAO']
 cols  =['parameter','mean','sddev','lower1','upper1','limit1','lower2','upper2','limit2','lower3','upper3','limit3','latex','fake1','fake2']
 
 #setup for plot
-colors = ['black','#8E001C','#FFB300','navy','green']
-labels = ['No systematics', 'SFR', 'metallicity', 'phenomenological','Planck only']
+colors = ['black','#8E001C','#FFB300','navy']
+labels = ['No systematics', 'SFR', 'metallicity', 'phenomenological']
 endred  = 2.
 plotred = np.logspace(np.log10(0.01),np.log10(float(endred)),1000)
 eps = 0.1*binwidth #this is only to separate the redshifts a bit for the different cases
 plt.figure()
-plt.title('Planck+JLA+BAO')
+
+plt.title('Planck+Pantheon+BAO')
+
 plt.ylim(-3,0)
 plt.ylabel(r'$w(z)$')
 plt.xlabel(r'$z$')
@@ -84,5 +86,5 @@ for case in range(len(roots)):
     plt.plot(plotred,interp, color=colors[case], label=labels[case])
 
 plt.legend(loc='lower left')
-plt.savefig('results_plots/wreconstruction_JLA.pdf')
-plt.savefig('/data1/martinelli/Dropbox/Projects/SNsys/wreconstruction_JLA.pdf')
+plt.savefig('results_plots/wreconstruction_Pantheononly.pdf')
+plt.savefig('/data1/martinelli/Dropbox/Projects/SNsys/wreconstruction_Pantheononly.pdf')

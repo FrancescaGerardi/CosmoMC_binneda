@@ -10,7 +10,7 @@ roots = ['SFRSys_wbinned_Planck_JLA_BAO','metalSys_wbinned_Planck_JLA_BAO','phen
 #roots = ['SFRSys_wconst_Planck']
 params = [u'binw1',u'binw2',u'binw3',u'binw4',u'omegam',u'H0']
 colors = ['#8E001C','#FFB300','navy','black']
-labels = [ 'SFR sys', 'metallicity sys', 'pheno sys', 'No sys']
+labels = [ 'SFR', 'metallicity', 'phenomenological', 'No sys']
 #labels = ['SFR sys']
 
 param_3d = None

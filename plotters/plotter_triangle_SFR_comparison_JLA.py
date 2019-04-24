@@ -6,7 +6,7 @@ analysis_settings = {'ignore_rows': u'0.3'}
 g=gplot.getSubplotPlotter(chain_dir=r'./chains',analysis_settings=analysis_settings)
 
 
-roots = ['SFRSys_wbinned_Planck_JLA_BAO','SFRSys_wconst_Planck_JLA_BAO']#,'SFRSys_LCDM_Planck_JLA_BAO']
+roots = ['SFRSys_wbinned_Planck_JLA_BAO','SFRSys_wconst_Planck_JLA_BAO','SFRSys_LCDM_Planck_JLA_BAO']
 params = [u'H0',u'omegam','SFR_kappa','SFR_phi','SFR_Dgamma']
 colors = ['#8E001C','#FFB300','navy']
 labels = [ r'$w(z)$CDM', r'$w$CDM',r'$\Lambda$CDM']

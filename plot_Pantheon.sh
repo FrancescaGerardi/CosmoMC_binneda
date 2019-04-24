@@ -4,7 +4,7 @@
 python plotters/plotter_triangle_metal_comparison_Pantheon.py
 python plotters/plotter_triangle_SFR_comparison_Pantheon.py
 python plotters/plotter_triangle_NOsys_comparison_Pantheon.py
-python plotters/plotter_triangle_pheno_comparison_Pantheon.py
+#python plotters/plotter_triangle_pheno_comparison_Pantheon.py
 
 python plotters/plotter_triangle_Planck_LCDM_Pantheon.py
 python plotters/plotter_triangle_Planck_wconst_Pantheon.py
@@ -12,4 +12,5 @@ python plotters/plotter_triangle_Planck_binned_Pantheon.py
 
 
 python plotters/wbinned_plot_Pantheon.py
-python plotters/plotter_H0_JLA.py
+python plotters/plotter_H0_Pantheon.py
+python plotters/plotter_S8_Pantheon.py

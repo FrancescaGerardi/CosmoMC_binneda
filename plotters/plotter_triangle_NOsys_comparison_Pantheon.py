@@ -3,7 +3,7 @@ import os
 
 
 analysis_settings = {'ignore_rows': u'0.3'}
-g=gplot.getSubplotPlotter(chain_dir=r'/data1/martinelli/Projects/MY_PROJECTS/SNsys/CosmoMC_binneda/chains',analysis_settings=analysis_settings)
+g=gplot.getSubplotPlotter(chain_dir=r'./chains',analysis_settings=analysis_settings)
 
 
 roots = ['NOSys_wbinned_Planck_Pantheon_BAO','NOSys_wconst_Planck_Pantheon_BAO','NOSys_LCDM_Planck_Pantheon_BAO']
