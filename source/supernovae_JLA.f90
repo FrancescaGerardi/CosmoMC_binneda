@@ -1279,7 +1279,7 @@
     end if
 
     write(*,*) 'jla_LnLike=',jla_LnLike
-stop
+
     END FUNCTION jla_LnLike
 
 
