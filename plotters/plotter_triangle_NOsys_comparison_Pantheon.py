@@ -13,6 +13,11 @@ labels = [ r'$w(z)$CDM', r'$w$CDM',r'$\Lambda$CDM']
 fillcont = [True,True,True,False,False,False]
 param_3d = None
 
+g.settings.axes_fontsize = 20
+g.settings.lab_fontsize = 20
+g.settings.legend_fontsize = 20
+g.settings.x_label_rotation=45
+
 g.triangle_plot(roots, params, contour_colors=colors, legend_colors=colors, legend_labels=labels, plot_3d_with_param=param_3d, filled=fillcont, shaded=False)
 g.export('results_plots/triplot_NOsys_comparison_Pantheon.pdf')
 g.export('/data1/martinelli/Dropbox/Projects/SNsys/triplot_NOsys_comparison_Pantheon.pdf')

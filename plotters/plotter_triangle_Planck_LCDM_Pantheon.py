@@ -15,6 +15,11 @@ colors = ['#8E001C','#FFB300','navy','black']
 #labels = [ 'SFR sys', 'metallicity sys','No sys']
 labels = ['metallicity','NO sys']
 
+#g.settings.axes_fontsize = 20
+#g.settings.lab_fontsize = 20
+#g.settings.legend_fontsize = 20
+#g.settings.x_label_rotation=45
+
 param_3d = None
 g.triangle_plot(roots, params, contour_colors=colors, legend_colors=colors, legend_labels=labels, plot_3d_with_param=param_3d, filled=[True,True,True,False], shaded=False)
 g.export('results_plots/triplot_Planck_Pantheon_BAO_LCDM.pdf')

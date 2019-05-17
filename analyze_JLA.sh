@@ -1,6 +1,6 @@
 #!/bin/env bash
 
-getSNsys
+#getSNsys
 
 sh getstats_JLA.sh
 sh plot_JLA.sh

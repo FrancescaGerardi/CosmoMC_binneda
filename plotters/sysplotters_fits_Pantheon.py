@@ -122,9 +122,9 @@ def getsys(z,root,data,w,om,H0):
 
 
 rootdir = 'output/'
-bin_roots = ['SFRSys_wbinned_Planck_JLA_BAO','metalSys_wbinned_Planck_JLA_BAO','NOSys_wbinned_Planck_JLA_BAO']
-w_roots = ['SFRSys_wconst_Planck_JLA_BAO','metalSys_wconst_Planck_JLA_BAO','NOSys_wconst_Planck_JLA_BAO']
-lam_roots = ['SFRSys_LCDM_Planck_JLA_BAO','metalSys_LCDM_Planck_JLA_BAO']
+bin_roots = ['SFRSys_wbinned_Planck_Pantheon_BAO','metalSys_wbinned_Planck_Pantheon_BAO','NOSys_wbinned_Planck_Pantheon_BAO']
+w_roots = ['SFRSys_wconst_Planck_Pantheon_BAO','metalSys_wconst_Planck_Pantheon_BAO','NOSys_wconst_Planck_Pantheon_BAO']
+lam_roots = ['SFRSys_LCDM_Planck_Pantheon_BAO','metalSys_LCDM_Planck_Pantheon_BAO']
 cols  =['parameter','mean','sddev','lower1','upper1','limit1','lower2','upper2','limit2','lower3','upper3','limit3','latex','fake1','fake2']
 
 
@@ -137,7 +137,7 @@ plotred = np.linspace(0.01,3,1000)
 
 #1: baseline LCDM no sys
 Nbins    = 4 
-data     = pd.read_csv(rootdir+'NOSys_LCDM_Planck_JLA_BAO.margestats',skiprows=3,sep='\s+',names=cols,usecols=cols[:-2])
+data     = pd.read_csv(rootdir+'NOSys_LCDM_Planck_Pantheon_BAO.margestats',skiprows=3,sep='\s+',names=cols,usecols=cols[:-2])
 wconst   = -1.
 omegam   = data.loc[data.parameter=='omegam*','mean'].values[0]
 H0       = data.loc[data.parameter=='H0*','mean'].values[0]
@@ -247,5 +247,5 @@ axs[2].legend(loc='lower right')
 axs[2].set_ylabel(r'$(\mu(z)-\mu^0(z))/\mu^0(z)$')
 axs[2].set_xlabel(r'$z$')
 
-plt.savefig('/data1/martinelli/Dropbox/Projects/SNsys/sysplot_fits_JLA.pdf')
+plt.savefig('/data1/martinelli/Dropbox/Projects/SNsys/sysplot_fits_Pantheon.pdf')
 plt.show()

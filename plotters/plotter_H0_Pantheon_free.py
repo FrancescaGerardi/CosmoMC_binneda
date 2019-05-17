@@ -10,14 +10,14 @@ import pandas as pd
 
 
 rootdir = 'output/'
-roots   = ['NOSys','SFRSys','metalSys']#,'phenoSys']
+roots   = ['SFRSys','metalSys']#,'phenoSys']
 DEtype  = ['wbinned','wconst','LCDM']
 DEtitle = ['w(z) reconstruction','constant w',r'$\Lambda$CDM'] 
 cols    = ['parameter','mean','sddev','lower1','upper1','limit1','lower2','upper2','limit2','lower3','upper3','limit3','latex','fake1','fake2']
 
 #setup for plot
-colors = ['black','#8E001C','#FFB300','navy']
-labels = ['No systematics', 'SFR', 'metallicity', 'Planck only']
+colors = ['#8E001C','#FFB300','navy']
+labels = ['SFR', 'metallicity', 'Planck only']
 
 
 fig, axs = plt.subplots(len(DEtype),1, figsize=(5, 6), facecolor='w', edgecolor='k')
@@ -35,7 +35,7 @@ for DE in range(len(DEtype)):
     for case in range(len(roots)):
 
        #Getting data from margestats
-       data   = pd.read_csv(rootdir+roots[case]+'_'+DEtype[DE]+'_Planck_Pantheon_BAO.margestats',skiprows=3,sep='\s+',names=cols,usecols=cols[:-2])
+       data   = pd.read_csv(rootdir+roots[case]+'_'+DEtype[DE]+'_Planck_Pantheon_BAO_free.margestats',skiprows=3,sep='\s+',names=cols,usecols=cols[:-2])
        mean   = data.loc[data.parameter=='H0*','mean'].values[0]
        sigma  = data.loc[data.parameter=='H0*','sddev'].values[0]
        lower1 = data.loc[data.parameter=='H0*','lower1'].values[0]
@@ -47,18 +47,6 @@ for DE in range(len(DEtype)):
 
        axs[DE].errorbar(mean,case+1.2,xerr=np.array(error).T, fmt='o', markersize='3', color=colors[case], ecolor=colors[case])
 
-       data   = pd.read_csv(rootdir+roots[case]+'_'+DEtype[DE]+'_Planck_Pantheon.margestats',skiprows=3,sep='\s+',names=cols,usecols=cols[:-2])
-       mean   = data.loc[data.parameter=='H0*','mean'].values[0]
-       sigma  = data.loc[data.parameter=='H0*','sddev'].values[0]
-       lower1 = data.loc[data.parameter=='H0*','lower1'].values[0]
-       upper1 = data.loc[data.parameter=='H0*','upper1'].values[0]
-       lower2 = data.loc[data.parameter=='H0*','lower2'].values[0]
-       upper2 = data.loc[data.parameter=='H0*','upper2'].values[0]
-       error  = [[mean-lower1,upper1-mean]]
-
-
-       test=axs[DE].errorbar(mean,case+0.8,xerr=np.array(error).T, fmt='o', markersize='3', color=colors[case], ecolor=colors[case])
-       test[-1][0].set_linestyle('--')
 
 
     data   = pd.read_csv(rootdir+DEtype[DE]+'_Planckonly.margestats',skiprows=3,sep='\s+',names=cols,usecols=cols[:-2])
@@ -88,4 +76,4 @@ for DE in range(len(DEtype)):
 
 
 plt.savefig('results_plots/errorbarH0_Pantheon.pdf', bbox_inches='tight')
-plt.savefig('/data1/martinelli/Dropbox/Projects/SNsys/errorbarH0_Pantheon.pdf', bbox_inches='tight')
+plt.savefig('/data1/martinelli/Dropbox/Projects/SNsys/errorbarH0_Pantheon_free.pdf', bbox_inches='tight')
