@@ -86,7 +86,7 @@
     !set number of hard parameters, number of initial power spectrum parameters
     !MMmod: binned w------------------------------------------------------
     write(*,*) 'parameters=',16+1+2*init_nbin+3+8
-    call this%SetTheoryParameterNumbers(16+1+2*init_nbin+3+8,last_power_index) !MMmod: SNsys added 7 parameters +1 switch
+    call this%SetTheoryParameterNumbers(16+1+2*init_nbin+3+8+2,last_power_index) !MMmod: SNsys added 7 parameters +1 switch  +2 HMcode
     write(*,*) 'parameters=',16+1+2*init_nbin+3+8
     !--------------------------------------------------------------------- 
 
@@ -380,6 +380,12 @@
         CMB%metal_R     = Params(16+1+2*init_nbin+3+7)
         CMB%metal_switch= Params(16+1+2*init_nbin+3+8) !to be a setting, not a parameter
         !---------------------------------------------------
+
+
+        !MMmod: KIDS
+        CMB%baryfeed = Params(16+1+2*init_nbin+3+9)
+        CMB%barybloat = Params(16+1+2*init_nbin+3+10)
+
 
         call SetFast(Params,CMB)
     end if

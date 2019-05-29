@@ -66,6 +66,7 @@
     TYPE HM_cosmology
         !Contains only things that do not need to be recalculated with each new z
         REAL :: om_m, om_v, w, wa, f_nu, ns, h, Tcmb, Nnu
+        REAL :: baryfeedcambhf, barybloatcambhf !SJ
         REAL, ALLOCATABLE :: r_sigma(:), sigma(:)
         REAL, ALLOCATABLE :: growth(:), a_growth(:)
         REAL, ALLOCATABLE :: k_plin(:), plin(:), plinc(:)
@@ -477,9 +478,10 @@
         !The first parameter here is 'eta_0' in Mead et al. (2015; arXiv 1505.07833)
         !eta=0.603-0.3*lut%sig8z
         !AM - made baryon feedback parameter obvious
-        eta0=cosm%eta_baryon
+        !eta0=cosm%eta_baryon
         !eta0=0.98-0.12*cosm%A_baryon !This is an (updated) one-parameter relation that could be used
-        eta=eta0-0.3*lut%sig8z
+        !eta=eta0-0.3*lut%sig8z
+        eta=(1.03-0.11*cosm%baryfeedcambhf)-0.3*lut%sig8z !SJ, vary \eta_0 as function of A
     END IF
 
     END FUNCTION eta
@@ -518,7 +520,8 @@
         !This is the 'A' halo-concentration parameter in Mead et al. (2015; arXiv 1505.07833)
         !As=3.13
         !AM - added for easy modification of feedback parameter
-        As=cosm%A_baryon
+        !As=cosm%A_baryon
+        As=cosm%baryfeedcambhf !SJ
     END IF
 
     END FUNCTION As
@@ -792,6 +795,9 @@
     !Converts CAMB parameters to Meadfit parameters
     cosm%om_m=CP%omegac+CP%omegab+CP%omegan
     cosm%om_v=CP%omegav
+    cosm%baryfeedcambhf=CP%baryfeed !SJ
+    cosm%barybloatcambhf=CP%barybloat !SJ
+    !MMmod: average w for binned case
     cosm%w=w_lam
     cosm%wa=wa_ppf
     cosm%f_nu=CP%omegan/cosm%om_m

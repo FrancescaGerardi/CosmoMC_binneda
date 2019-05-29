@@ -16,6 +16,7 @@
     use szcounts !Anna
     use wl
     use ElementAbundances
+    use CosmicShear !SJ
     !FGmod-------
     use priorwde
     !------------    
@@ -43,6 +44,7 @@
 
     call WLLikelihood_Add(DataLikelihoods, Ini)
 
+    call CosmicShearLikelihood_Add(DataLikelihoods, Ini) !SJ
 
     !FGmod-------
     call wLikelihood_Add(DataLikelihoods, Ini)

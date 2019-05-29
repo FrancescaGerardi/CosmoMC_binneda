@@ -28,6 +28,8 @@ SFR_Dgamma    \Delta\gamma
 metal_y       y
 metal_R       R
 metal_switch  {\rm switch}
+baryfeed      \log B #meadfit baryon feedback param
+barybloat     \eta_0 #meadfit baryon bloating param
 logA          {\rm{ln}}(10^{10} A_s)
 ns            n_s	    #beware that pivot scale can change in .ini file
 nrun          n_{\rm run}

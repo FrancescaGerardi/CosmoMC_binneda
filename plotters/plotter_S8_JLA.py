@@ -23,9 +23,11 @@ labels = ['No systematics', 'SFR', 'metallicity', 'Planck only']
 fig, axs = plt.subplots(len(DEtype),1, figsize=(5, 6), facecolor='w', edgecolor='k')
 fig.subplots_adjust(hspace = .8, wspace=.001)
 
-kids_low = (0.745-0.039)*np.sqrt(0.3)
-kids_high= (0.745+0.039)*np.sqrt(0.3)
 
+kids_low = [(0.745-0.039)*np.sqrt(0.3), , (0.745-0.039)*np.sqrt(0.3)]
+kids_high= [(0.745+0.039)*np.sqrt(0.3), , (0.745-0.039)*np.sqrt(0.3)]
+kidsS8    = [0.745*np.sqrt(0.3), , 0.745*np.sqrt(0.3)]
+kidssigma = [0.039*np.sqrt(0.3), ,0.039*np.sqrt(0.3)]
 axs = axs.ravel()
 
 for DE in range(len(DEtype)):
@@ -44,6 +46,8 @@ for DE in range(len(DEtype)):
        upper2 = data.loc[data.parameter=='s8omegamp5*','upper2'].values[0]
        error  = [[mean-lower1,upper1-mean]]
 
+       print 'Tension for case {} is {}'.format(roots[case]+'_'+DEtype[DE]+'_Planck_JLA_BAO.margestats', abs(kidsS8[DE]-mean)/np.sqrt(kidssigma[DE]**2.+sigma**2.))
+
 
        axs[DE].errorbar(mean,case+1.2,xerr=np.array(error).T, fmt='o', markersize='3', color=colors[case], ecolor=colors[case])
 
@@ -57,9 +61,11 @@ for DE in range(len(DEtype)):
        upper2 = data.loc[data.parameter=='s8omegamp5*','upper2'].values[0]
        error  = [[mean-lower1,upper1-mean]]
 
+       print 'Tension for case {} is {}'.format(roots[case]+'_'+DEtype[DE]+'_Planck_JLA.margestats', abs(kidsS8[DE]-mean)/np.sqrt(kidssigma[DE]**2.+sigma**2.))
 
        test=axs[DE].errorbar(mean,case+0.8,xerr=np.array(error).T, fmt='o', markersize='3', color=colors[case], ecolor=colors[case])
        test[-1][0].set_linestyle('--')
+
 
 
     data   = pd.read_csv(rootdir+DEtype[DE]+'_Planckonly.margestats',skiprows=3,sep='\s+',names=cols,usecols=cols[:-2])
@@ -72,11 +78,13 @@ for DE in range(len(DEtype)):
     error  = [[mean-lower1,upper1-mean]]
 
 
+    print 'Tension for case {} is {}'.format(roots[case]+'_'+DEtype[DE]+'_Planckonly.margestats', abs(kidsS8[DE]-mean)/np.sqrt(kidssigma[DE]**2.+sigma**2.))
+
     axs[DE].errorbar(mean,4,xerr=np.array(error).T, fmt='o', markersize='3', color='green', ecolor='green')
 
 
 
-    axs[DE].axvspan(kids_low, kids_high, alpha=0.5, color='gray')
+    axs[DE].axvspan(kids_low[DE], kids_high[DE], alpha=0.5, color='gray')
     #axs[DE].legend(loc='lower left')
     axs[DE].set_ylim(0,5)
     #axs[DE].set_xlim(64,80)

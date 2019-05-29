@@ -25,7 +25,8 @@ fig.subplots_adjust(hspace = .8, wspace=.001)
 
 HST_low = 74.03 - 1.42
 HST_high= 74.03 + 1.42
-
+sigmaHST = 1.42
+HST = 74.03
 axs = axs.ravel()
 
 for DE in range(len(DEtype)):
@@ -45,6 +46,7 @@ for DE in range(len(DEtype)):
        upper2 = data.loc[data.parameter=='H0*','upper2'].values[0]
        error  = [[mean-lower1,upper1-mean]]
 
+       print 'Tension for case {} is {}'.format(roots[case]+'_'+DEtype[DE]+'_Planck_JLA_BAO.margestats', abs(HST-mean)/np.sqrt(sigmaHST**2.+sigma**2.))
 
        axs[DE].errorbar(mean,case+1.2,xerr=np.array(error).T, fmt='o', markersize='3', color=colors[case], ecolor=colors[case])
 
@@ -58,6 +60,7 @@ for DE in range(len(DEtype)):
        upper2 = data.loc[data.parameter=='H0*','upper2'].values[0]
        error  = [[mean-lower1,upper1-mean]]
 
+       print 'Tension for case {} is {}'.format(roots[case]+'_'+DEtype[DE]+'_Planck_JLA.margestats', abs(HST-mean)/np.sqrt(sigmaHST**2.+sigma**2.))
 
        test=axs[DE].errorbar(mean,case+0.8,xerr=np.array(error).T, fmt='o', markersize='3', color=colors[case], ecolor=colors[case])
        test[-1][0].set_linestyle('--')
@@ -75,6 +78,7 @@ for DE in range(len(DEtype)):
 
     axs[DE].errorbar(mean,4,xerr=np.array(error).T, fmt='o', markersize='3', color='green', ecolor='green')
 
+    print 'Tension for case {} is {}'.format(roots[case]+'_'+DEtype[DE]+'_Planckonly', abs(HST-mean)/np.sqrt(sigmaHST**2.+sigma**2.))
 
     axs[DE].axvspan(HST_low, HST_high, alpha=0.5, color='gray')
     #axs[DE].legend(loc='lower left')
